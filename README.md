@@ -11,11 +11,17 @@ Future features will include:
 
   Additional display options such as:
     -Accountancy - i.e tracking how much money you have
+    
     -Single coin up/down conversion
+    
     -Custom currency display
+    
     -Theme changes
+    
     -Font changes
+    
     -Alternate currencies for games other than WHFRP
+    
     -Custom Currencies and conversions
     
     ***
