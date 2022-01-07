@@ -21,5 +21,6 @@ Future features will include:
     ***
     NOTE: As the EXE was bundled using Pyinstaller, some Anti virus software will flag this as a virus. 
     This is purely heuristic/generic and because it is not a signed exe.
-    If this bothers you, or you don't trust this application, you are instead encouraged to build it yourself or just run the .py script directly.
+    If this bothers you, or you don't trust this application, you are instead encouraged to build it yourself-
+    or just run the .py script directly.
     ***
