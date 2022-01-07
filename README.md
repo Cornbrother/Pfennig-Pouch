@@ -17,9 +17,9 @@ Future features will include:
     
     -Custom currency display
     
-    -Theme changes
+    -Theme settings
     
-    -Font changes
+    -Font settings
     
     -Alternate currencies for games other than WHFRP
     
