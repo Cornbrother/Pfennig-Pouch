@@ -1,10 +1,10 @@
-# Pfennig-Pouch
+# Pfennig Pouch v1.0.0 
 A Currency Converter widget for WHRP
 
 
 A simple widget that is used for online tabletop roleplaying games to convert money.
 
-Current version: 1.0.0 - 07/01/2022 - GNU General Public License v3.0
+Current version: v1.0.0 - 07/01/2022 - GNU General Public License v3.0
 
 
 Future features will include:
