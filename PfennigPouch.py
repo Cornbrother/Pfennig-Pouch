@@ -5,6 +5,8 @@ import traceback
 import os
 cwd = os.getcwd()
 
+#! build with pyinstaller -wF --onefile --clean PfennigPouch.py -i=Pfennig.ico --runtime-tmpdir \Temp  
+
 sg.theme('DarkAmber')    
 
 def PocketChange(gold=False, silver=False, copper=False, option:str="straight",golddec=2,silverdec=1,copperdec=0,forceRoundDown=True, debug=False):
@@ -106,7 +108,7 @@ window = sg.Window("Pfennig Pouch",
                     text_justification='c',
                     no_titlebar=True,
                     grab_anywhere=True,
-                    keep_on_top=True, finalize=True,font=("ink free", "14", "bold"))
+                    keep_on_top=True, finalize=True,font=("ink free", "14", "bold")) #cloister black/no bold alternate font
 window['-options-'].Widget.configure(justify='center',)
 #modifies input textbox key to capture click
 window['-G-'].bind('<Button-1>','+CLICKEDG')
