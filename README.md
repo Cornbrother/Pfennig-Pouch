@@ -1,5 +1,5 @@
 # Pfennig Pouch v1.0.0 
-A Currency Converter widget for WHRP
+A Currency Converter widget for WHFRP
 
 
 A simple widget that is used for online tabletop roleplaying games to convert money.
@@ -17,9 +17,9 @@ Future features will include:
     
     -Custom currency display
     
-    -Theme changes
+    -Theme settings
     
-    -Font changes
+    -Font settings
     
     -Alternate currencies for games other than WHFRP
     
