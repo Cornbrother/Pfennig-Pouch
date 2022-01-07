@@ -24,3 +24,6 @@ Future features will include:
     If this bothers you, or you don't trust this application, you are instead encouraged to build it yourself-
     or just run the .py script directly.
     ***
+
+
+![image](https://user-images.githubusercontent.com/64257019/148580333-1c9685ab-984a-4999-9655-ac7653d31d81.png)
