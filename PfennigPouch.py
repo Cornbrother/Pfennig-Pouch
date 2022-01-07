@@ -5,7 +5,7 @@ import traceback
 import os
 cwd = os.getcwd()
 
-sg.theme('DarkAmber')    # Keep things interesting for your users
+sg.theme('DarkAmber')    
 
 def PocketChange(gold=False, silver=False, copper=False, option:str="straight",golddec=2,silverdec=1,copperdec=0,forceRoundDown=True, debug=False):
     '''
@@ -15,18 +15,19 @@ def PocketChange(gold=False, silver=False, copper=False, option:str="straight",g
 
         
     def OutputFormatter(value,decimalPlaces:int,forceRoundDown=forceRoundDown):
-        # value = 2.456 , decimalplaces = 2, forceround down = True 
-        # expects 2.45
+        '''
+        Recives a decimal number and then rounds it down to the nearest designated significant digit without technically losing precision
+        
+        '''
         if forceRoundDown != True:
             return(round(value,decimalPlaces))
         
-        #convertFactor = 10 ** decimalPlaces # 100
-        
+
         # 2.456
         result = value * (10 ** decimalPlaces)
         
         #245.6
-        decimalstrip = result % int(1) # 0.55999999999999943
+        decimalstrip = result % int(1) 
         result = result - decimalstrip
         
         #245
@@ -37,21 +38,23 @@ def PocketChange(gold=False, silver=False, copper=False, option:str="straight",g
 
         return(result)
 
-    def CoinConverter (gold=gold, silver=silver, copper=copper, option=option, golddec=golddec,silverdec=silverdec,copperdec=copperdec,debug=debug):  #!hyperstraight function (or is it?)
+    def CoinConverter (gold=gold, silver=silver, copper=copper, option=option, golddec=golddec,silverdec=silverdec,copperdec=copperdec,debug=debug):
         """
             Receives inputs of values and returns the amount for each individual type as a total pile, has three functions: Straight convert, Round to gold, Round to silver(pocketchange)
         """
-        print(golddec,silverdec,copperdec)   #!debug printout
-        inputCopper = copper # 0 copper 
-        inputCopper += silver*12 # 20 silver = 240 copper
-        inputCopper += gold*240  # still 240 copper
+        if debug == True:
+            print(golddec,silverdec,copperdec)   #!debug printout
+            
+        inputCopper = copper  
+        inputCopper += silver*12 
+        inputCopper += gold*240  
         
         
         outputgold = OutputFormatter(inputCopper/240,golddec) # converts copper to gold (change second variable to adjust output decimal places)
         outputsilver = OutputFormatter(inputCopper/12,silverdec) # converts copper to silver (change second variable to adjust output decimal places)
         outputcopper = OutputFormatter(inputCopper,copperdec) # outputs copper (change second variable to adjust output decimal places)
         
-        if option == "rtg":
+        if option == "rtg": #rounds to gold
             
             outputgold = int(inputCopper / 240) 
             inputCopper = inputCopper - (outputgold * 240) #turns as much copper to gold as possible, then outputs amount of copper left after gold is converted
@@ -62,7 +65,7 @@ def PocketChange(gold=False, silver=False, copper=False, option:str="straight",g
             print("rtg",outputgold, outputsilver, outputcopper)
             return(outputgold, outputsilver, outputcopper)
         
-        if option == "rts":
+        if option == "rts": #rounds to silver
             
             outputsilver = int(inputCopper / 12) #turns all copper to silver
             outputcopper = inputCopper - (silver * 12) #outputs remaining copper
@@ -73,16 +76,11 @@ def PocketChange(gold=False, silver=False, copper=False, option:str="straight",g
             #todo 4th option is spending tracker
                 #todo requires new input function to process "current funds" to output instead of translating
 
-        
-        # elif option != "Straight" or "straight" or "rtg" or "rts":
-        #     return(print("Invalid option","***"+str(option)+"***"))
-        
-        #result = (f"{outputgold:.{golddec}f}",f"{outputsilver:.{golddec}f}",f"{outputcopper:.{golddec}f}")
         result = (outputgold,outputsilver,outputcopper)
         return (result)
 
     gold,silver,copper = CoinConverter(gold,silver,copper)
-    result = (f"{gold:.{golddec}f}",f"{silver:.{silverdec}f}",f"{copper:.{copperdec}f}")
+    result = (f"{gold:.{golddec}f}",f"{silver:.{silverdec}f}",f"{copper:.{copperdec}f}") #converts decimal output to fstring
     if debug ==True:
         print (result)
         return(result)
@@ -90,12 +88,12 @@ def PocketChange(gold=False, silver=False, copper=False, option:str="straight",g
 
 
 b1 = [[sg.Column([
-    #"Gold: " + str(GOLD1)+ " | " + "Silver: " + str(SILVER20)+  " | " + "Copper: " + str(COPPER240)
+
     [sg.Push(),sg.Text("", key="-Dialogue-", text_color="#fdc3a2"),sg.Push()],
     
     [sg.Input(key='-G-', size= (9,10),enable_events = True,justification="c", default_text = "G", expand_x = True),sg.Input(key='-S-', size= (9,10),enable_events = True,justification="c", default_text = "S", expand_x = True),sg.Input(key='-C-', size= (9,10),enable_events = True,justification="c", default_text = "C", expand_x = True)],
 
-    [sg.Button("Clear"),sg.Push(),sg.OptionMenu(values=("   Straight","Round to Gold","Round to Silver"), key="type1", default_value="   Straight",),sg.Push(),sg.Exit()]
+    [sg.Button("Clear"),sg.Push(),sg.OptionMenu(values=("   Straight","Round to Gold","Round to Silver"), key="-options-", default_value="   Straight",),sg.Push(),sg.Exit()]
 
     
     ],pad=(5,(5,5)))]]
@@ -109,20 +107,21 @@ window = sg.Window("Pfennig Pouch",
                     no_titlebar=True,
                     grab_anywhere=True,
                     keep_on_top=True, finalize=True,font=("ink free", "14", "bold"))
-window['type1'].Widget.configure(justify='center',)
-window['-G-'].bind('<Button-1>','+CLICKEDG') 
+window['-options-'].Widget.configure(justify='center',)
+#modifies input textbox key to capture click
+window['-G-'].bind('<Button-1>','+CLICKEDG')
 window['-S-'].bind('<Button-1>','+CLICKEDS') 
 window['-C-'].bind('<Button-1>','+CLICKEDC') 
 
-#region
-while True:                             # The Event Loop
+
+while True:                             
     event, values = window.read() 
     print(event, values)   
 
     
     if event == sg.WIN_CLOSED or event == 'Exit':
         break
-    
+    #selects text within input textbox based on modified string from bind
     if event.endswith('+CLICKEDG'):
         window['-G-'].update(select=True)
     if event.endswith('+CLICKEDS'):
@@ -130,10 +129,10 @@ while True:                             # The Event Loop
     if event.endswith('+CLICKEDC'):
         window['-C-'].update(select=True)
 
-    if values["type1"] == "   Straight": #***Straight
+    if values["-options-"] == "   Straight": #***Straight
             
         if event == "-G-": #*GOLD STRAIGHT
-            if len(values['-G-']) and values['-G-'][-1] not in ('0123456789.'):
+            if len(values['-G-']) and values['-G-'][-1] not in ('0123456789.'): #input validation
                 window['-G-'].update(values['-G-'][:-1])
                 window["-Dialogue-"](value="Numbers only!")  
                 
@@ -143,7 +142,7 @@ while True:                             # The Event Loop
                     window["-S-"](value="S")
                     window["-C-"](value="C")
                 
-                    MoneyBag = PocketChange(gold=Decimal(values['-G-']),golddec=0,silverdec=0,debug=True) #! I thnk it's this int that's actually causing the problem, but I don't see a way to get rid of it
+                    MoneyBag = PocketChange(gold=Decimal(values['-G-']),golddec=0,silverdec=0,debug=True)
                     print ("pocketchange outputlist",MoneyBag)
                     Gold,Silver,Copper = MoneyBag
                     print ("moneybag unpack",Gold,Silver,Copper)
@@ -155,7 +154,7 @@ while True:                             # The Event Loop
  
                         
         if event == "-S-": #*SILVER STRAIGHT
-            if len(values['-S-']) and values['-S-'][-1] not in ('0123456789.'):
+            if len(values['-S-']) and values['-S-'][-1] not in ('0123456789.'):#input validation
     
                 window['-S-'].update(values['-S-'][:-1])
                 window["-Dialogue-"](value="Numbers only!")  
@@ -173,7 +172,7 @@ while True:                             # The Event Loop
                 logging.exception("*oh no, an error D:*")   
 
         if event == "-C-": #*COPPER STRAIGHT
-            if len(values['-C-']) and values['-C-'][-1] not in ('0123456789.'):
+            if len(values['-C-']) and values['-C-'][-1] not in ('0123456789.'):#input validation
     
                 window['-C-'].update(values['-C-'][:-1])
             try:
@@ -200,10 +199,10 @@ while True:                             # The Event Loop
             
     #*#############################################################################################*#
     
-    if values["type1"] == "Round to Gold": #***Round to Gold
+    if values["-options-"] == "Round to Gold": #***Round to Gold
         window['-Dialogue-']("") 
         if event == "-G-": #*GOLD RTGOLD
-            if len(values['-G-']) and values['-G-'][-1] not in ('0123456789.'):
+            if len(values['-G-']) and values['-G-'][-1] not in ('0123456789.'):#input validation
     
                 window['-G-'].update(values['-G-'][:-1])
                 window["-Dialogue-"](value="Numbers only!")  
@@ -224,7 +223,7 @@ while True:                             # The Event Loop
                 logging.exception("*oh no, an error D:*")   
                 
         if event == "-S-": #*SILVER RTGOLD
-            if len(values['-S-']) and values['-S-'][-1] not in ('0123456789.'):
+            if len(values['-S-']) and values['-S-'][-1] not in ('0123456789.'):#input validation
     
                 window['-S-'].update(values['-S-'][:-1])
                 window["-Dialogue-"](value="Numbers only!")  
@@ -276,10 +275,10 @@ while True:                             # The Event Loop
         
     #*#############################################################################################*#
     
-    if values["type1"] == "Round to Silver": #***Round to Silver
+    if values["-options-"] == "Round to Silver": #***Round to Silver
             
         if event == "-G-": #*GOLD RTSILVER
-            if len(values['-G-']) and values['-G-'][-1] not in ('0123456789.'):
+            if len(values['-G-']) and values['-G-'][-1] not in ('0123456789.'):#input validation
     
                 window['-G-'].update(values['-G-'][:-1])
                 window["-Dialogue-"](value="Numbers only!")  
@@ -300,7 +299,7 @@ while True:                             # The Event Loop
                 logging.exception("*oh no, an error D:*")   
                 
         if event == "-S-": #*SILVER RTSILVER
-            if len(values['-S-']) and values['-S-'][-1] not in ('0123456789.'):
+            if len(values['-S-']) and values['-S-'][-1] not in ('0123456789.'):#input validation
     
                 window['-S-'].update(values['-S-'][:-1])
                 window["-Dialogue-"](value="Numbers only!")  
@@ -319,7 +318,7 @@ while True:                             # The Event Loop
                 logging.exception("*oh no, an error D:*")                
 
         if event == "-C-": #*COPPER RTSILVER
-            if len(values['-C-']) and values['-C-'][-1] not in ('0123456789.'):
+            if len(values['-C-']) and values['-C-'][-1] not in ('0123456789.'):#input validation
     
                 window['-C-'].update(values['-C-'][:-1])
                 window["-Dialogue-"](value="Numbers only!")  
@@ -349,16 +348,5 @@ while True:                             # The Event Loop
         print(traceback.format_exc())
     
 
-
-    
-
-
-
-
-
 window.close()
 
-
-#things to do
-    #fix frame padding on bottom
-    #finish the formatted output (gold as fraction when converting silver or copper)
