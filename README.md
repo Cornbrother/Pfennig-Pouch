@@ -8,6 +8,7 @@ Current version: 1.0.0 - 07/01/2022 - GNU General Public License v3.0
 
 
 Future features will include:
+'''
   
     -Accountancy - i.e tracking how much money you have
     
@@ -23,6 +24,7 @@ Future features will include:
     
     -Custom Currencies and conversions
     
+'''    
     ***
     NOTE: As the EXE was bundled using Pyinstaller, some Anti virus software will flag this as a virus. 
     This is purely heuristic/generic and because it is not a signed exe.
